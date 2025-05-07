@@ -55,7 +55,7 @@ jobs:
 
 
   compile-apple-arm64: 
-    if:  env.COMPILE_ALL == 'true' 
+    if:  env.COMPILE_ALL 
     needs: compile-java
     runs-on: macos-latest
 
