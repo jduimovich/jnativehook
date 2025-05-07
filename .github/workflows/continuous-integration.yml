@@ -508,7 +508,7 @@ jobs:
           cmake --install target/build/jni/
 
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: library-resources
           path: |
