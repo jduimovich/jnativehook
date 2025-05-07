@@ -54,8 +54,8 @@ jobs:
           if-no-files-found: error
 
 
-  compile-apple-arm64:
-    if:  ${{COMPILE_ALL}} == "true"
+  compile-apple-arm64: 
+    if: ${{ env.COMPILE_ALL == 'true' }}
     needs: compile-java
     runs-on: macos-latest
 
