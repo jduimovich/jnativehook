@@ -17,6 +17,8 @@ on:
 concurrency:
   group:  ci-${{ github.ref }}
   cancel-in-progress: true
+env:
+  COMPILE_ALL: false
 
 jobs:
   compile-java:
@@ -53,6 +55,7 @@ jobs:
 
 
   compile-apple-arm64:
+    if:  ${{COMPILE_ALL}} == "true"
     needs: compile-java
     runs-on: macos-latest
 
