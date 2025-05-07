@@ -16,9 +16,7 @@ on:
 
 concurrency:
   group:  ci-${{ github.ref }}
-  cancel-in-progress: true
-env:
-  COMPILE_ALL: false
+  cancel-in-progress: true 
 
 jobs:
   compile-java:
@@ -51,67 +49,6 @@ jobs:
           name: target-cache
           path: |
             ${{github.workspace}}/target
-          if-no-files-found: error
-
-
-  compile-apple-arm64: 
-    if:  env.COMPILE_ALL 
-    needs: compile-java
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: true
-
-      - name: Download
-        uses: actions/download-artifact@v4
-        with:
-          name: target-cache
-          path: ${{github.workspace}}/target
-
-      - name: Compile
-        env:
-          CC: clang
-          CFLAGS: '-O2 -g -target arm64-apple-macos10.5 -flto -fomit-frame-pointer -fno-stack-protector -pipe'
-          LDFLAGS: '-Wl,-dead_strip_dylibs'
-        shell: bash
-        run: |
-          mkdir -p target/build/libuiohook/
-          cmake -B target/build/libuiohook/ -S src/external/libuiohook/ \
-            -G "Unix Makefiles" \
-            -D CMAKE_INSTALL_PREFIX=target/ \
-            -D CMAKE_VERBOSE_MAKEFILE=ON \
-            -D BUILD_SHARED_LIBS=OFF \
-            -D USE_EPOCH_TIME=ON
-
-          cmake --build target/build/libuiohook/ \
-            --parallel 2 \
-            --clean-first
-
-          cmake --install target/build/libuiohook/
-
-          mkdir -p target/build/jni/
-          cmake -B target/build/jni/ \
-            -G "Unix Makefiles" \
-            -D CMAKE_PREFIX_PATH=target/ \
-            -D CMAKE_SYSTEM_NAME=darwin \
-            -D CMAKE_SYSTEM_PROCESSOR=arm64 \
-            -D CMAKE_VERBOSE_MAKEFILE=ON
-
-          cmake --build target/build/jni/ \
-            --parallel 2 \
-            --clean-first
-
-          cmake --install target/build/jni/
-
-      - name: Upload
-        uses: actions/upload-artifact@v4
-        with:
-          name: library-resources
-          path: |
-            ${{github.workspace}}/src/main/resources
           if-no-files-found: error
 
   compile-linux-x86_64:
