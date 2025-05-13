@@ -1,0 +1,13 @@
+
+
+# Do this first, creates a jnativehook repo
+
+git clone  https://github.com/jduimovich/jnativehook.git 
+(cd jnativehook/src/external; git clone  https://github.com/kwhat/libuiohook.git)
+
+
+# ensure Java home is CMAKE_SYSTEM_PROCESSOR
+set JAVA_HOME=/usr/lib/jvm/java-17-openjdk-ppc64el
+
+
+# bash build-all
