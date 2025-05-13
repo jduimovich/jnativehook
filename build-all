@@ -1,3 +1,12 @@
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-ppc64el
+
+if [ -d $JAVA_HOME]; then
+    echo "$JAVA_HOME exists"
+else 
+    echo "$JAVA_HOME does not exist - exiting"
+    exit
+fi
+
 mkdir -p target/build/libuiohook/
 cmake -B target/build/libuiohook/ -S src/external/libuiohook/ \
 -G "Unix Makefiles" \
